@@ -1,0 +1,296 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  font-family: "JetBrains Mono", sans-serif;
+}
+
+*::selection {
+  background-color: var(--yellow);
+  color: var(--dark-gray);
+}
+
+:root {
+  --red: #ff657a;
+  --green: #bad761;
+  --yellow: #ffd76d;
+  --orange: #ff9b5e;
+  --purple: #c39ac9;
+  --blue: #9cd1bb;
+
+  --dark-gray: #2c292d;
+  --dark-blue: #282a3a;
+
+  --medium-gray: #929292;
+
+  --light-gray: #fbfbfb;
+
+  --white: #eeeeee;
+
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  font-variant-ligatures: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--light-gray);
+
+
+  box-sizing: border-box;
+  margin: 0;
+  padding: 16px;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+}
+
+.dot-background {
+  --bg-color: var(--light-gray);
+  --dot-color: #eeeeee;
+
+  --dot-gap: 14%;
+  --dot-space: 24px;
+
+  background: radial-gradient(var(--dot-color) var(--dot-gap), var(--bg-color) var(--dot-gap));
+  background-size: var(--dot-space) var(--dot-space);
+}
+
+details {
+  color: var(--dark-blue);
+  padding-top: 4px
+}
+
+details[open].full-height {
+  height: 100%;
+}
+
+#terminal {
+  padding: 12px;
+  overflow-y: auto;
+  /* flex: 1; */
+  resize: horizontal;
+  width: 50%;
+}
+
+#visualization {
+  flex: 1;
+}
+
+#visualization {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+#tokens {
+  padding-top: 8px;
+}
+
+#ast-container {
+  /* flex: 1; */
+  height: calc(100% - 32px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#ast-group {
+  position: relative;
+  overflow: auto;
+  /* height: 100%; */
+  padding: 4px;
+}
+
+#ast-connections {
+  stroke: var(--medium-gray);
+  stroke-width: 2px;
+  stroke-dasharray: 2px;
+}
+
+#ast-json {
+  overflow: auto;
+  resize: vertical;
+  height: 280px;
+}
+
+.ast-node,
+.token {
+  position: absolute;
+  background-color: var(--blue);
+  color: #2b2d2f;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: center;
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px black;
+}
+
+.token {
+  padding: 0 12px;
+  position: relative;
+  display: inline-block;
+  margin: 0 8px;
+}
+
+small {
+  font-size: 12px;
+  display: block;
+}
+
+
+.json {
+  border-bottom: 4px solid transparent;
+  */ border-radius: 4px;
+  padding: 0 4px;
+}
+
+.ast-node.keyword,
+.token.keyword,
+.token.bg-true,
+.token.bg-false,
+.token.bg-null,
+.token.bg-for {
+  background-color: var(--orange);
+}
+
+.token.bg-or,
+.token.bg-and {
+  background-color: var(--yellow);
+}
+
+.helper {
+  background-color: var(--light-gray);
+  border: none;
+  box-shadow: none;
+}
+
+.highlight {
+  background-color: var(--dark-gray);
+  color: var(--light-gray);
+  padding: 0 8px;
+}
+
+.bg-statement-list,
+.bg-member-expression,
+.bg-array-expression,
+.bg-identifier {
+  background-color: var(--blue);
+}
+
+.bg-logical-expression {
+  background-color: var(--yellow);
+}
+
+.bg-open-parenthesis,
+.bg-closed-parenthesis,
+.bg-open-square-bracket,
+.bg-closed-square-bracket,
+.bg-dot,
+.bg-semicolon {
+  background-color: var(--white);
+  color: var(--medium-gray);
+}
+
+.bg-numeric-literal {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.bg-numeric-literal small {
+  font-weight: 900;
+}
+
+.bg-string-literal {
+  background-color: var(--green);
+}
+
+.bg-binary-expression,
+.bg-equality-operator,
+.bg-relational-operator,
+.bg-additive-operator,
+.bg-multiplicative-operator {
+  background-color: var(--purple);
+}
+
+.bg-error {
+  background-color: red;
+  color: white
+}
+
+.undefined {
+  font-style: italic;
+  color: var(--medium-gray);
+}
+
+.error {
+  color: var(--red);
+}
+
+summary {
+  background-color: #ececec;
+  padding: 4px 8px;
+}
+
+
+/*========================================================= TERMINAL =========================================================*/
+#terminal {
+  --terminal-text-color: #000;
+
+  color: var(--terminal-text-color);
+}
+
+#terminal-input {
+  display: inline;
+  outline: none;
+  visibility: visible;
+}
+
+
+#terminal-input:empty::before {
+  content: ' ';
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+#terminal-input:focus+#caret {
+  animation: blink 1s steps(5, start) infinite;
+}
+
+#terminal-input.no-caret {
+  caret-color: unset;
+}
+
+#terminal-input.no-caret+#caret {
+  visibility: hidden;
+}
+
+#caret {
+  border: 0;
+  padding: 0;
+  outline: none;
+  background-color: var(--terminal-text-color);
+  display: inline-block;
+  font-family: monospace;
+}

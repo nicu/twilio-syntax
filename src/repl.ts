@@ -1,11 +1,20 @@
 import repl from "node:repl";
+import util from "node:util";
 
 function parse(text: string) {
   return text.replace(/\n$/, "");
 }
 
-function myEval(cmd: any, context: any, filename: string, callback: any) {
+function customEval(cmd: any, context: any, filename: string, callback: any) {
   callback(null, parse(cmd));
 }
 
-repl.start({ prompt: "Twilio Expression > ", eval: myEval });
+function customWriter(output: any): string {
+  return util.inspect(output, undefined, null, true);
+}
+
+repl.start({
+  prompt: "Twilio Expressions > ",
+  eval: customEval,
+  writer: customWriter,
+});

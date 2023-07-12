@@ -2,9 +2,14 @@
   "name": "twilio-syntax",
   "version": "1.0.0",
   "description": "A Twilio TaskRouter expression parser",
+  "homepage": "https://nicu.github.io/twilio-syntax",
   "scripts": {
     "repl": "ts-node src/repl.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "dev": "vite",
+    "build": "vite build --outDir=docs --base=./",
+    "preview": "vite preview --outDir=docs --base=./"
   },
   "keywords": [
     "Twilio",
