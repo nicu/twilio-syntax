@@ -14,7 +14,7 @@ function customWriter(output: any): string {
 }
 
 repl.start({
-  prompt: "Twilio Expressions > ",
+  prompt: "Twilio Expression > ",
   eval: customEval,
   writer: customWriter,
 });
