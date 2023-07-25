@@ -1,4 +1,13 @@
+import Parser from "../language/parser";
+import Tokenizer from "../language/tokenizer";
 import "./terminal.css";
+import {
+  Tree,
+  TreeLayout,
+  transformAST,
+  draw,
+  drawConnections,
+} from "../tree/tree";
 
 const commands: Array<string> = [];
 let commandIndex = -1;
@@ -12,6 +21,11 @@ export function setupTerminal() {
   const tokensElem = document.getElementById("tokens")!;
   const astJSON = document.getElementById("ast-json")!;
   const terminalElem = document.getElementById("terminal");
+
+  const tokenizer = new Tokenizer();
+  const parser = new Parser();
+
+  const treeLayout = new TreeLayout();
 
   function focusAndMoveCursorToTheEnd() {
     input.focus();
@@ -50,6 +64,71 @@ export function setupTerminal() {
     astContainer.removeAttribute("style");
   }
 
+  function printTokens(command: string) {
+    tokenizer.init(command);
+
+    const tokens = [];
+    const output = [];
+    while (tokenizer.hasMoreTokens()) {
+      const token = tokenizer.getNextToken();
+      if (token) {
+        tokens.push(token);
+        output.push(
+          `<div class="token bg-${token.type
+            .toLowerCase()
+            .replace(/_/g, "-")}" title="${token.type}">${token.value}<small>${
+            token.type
+          }</small></div>`
+        );
+      }
+    }
+    tokensElem.innerHTML = output.join("");
+    return tokens;
+  }
+
+  function printAST(command: string) {
+    const ast = parser.parse(command);
+    const astText = JSON.stringify(ast, null, 2);
+
+    astJSON.innerHTML = astText.replace(
+      /("type": "([^"]+)"),\n(\s*)("(name|value|operator)": (("[^"]+")|(\d+(\.\d+)?)|true|false|null))/g,
+      (_, __, gType, gSpace, ___, gKey, gValue1, gValue2, gValue3) => {
+        let className = gType.replace(
+          /[A-Z]/g,
+          (letter: string) => `-${letter.toLowerCase()}`
+        );
+        if (className[0] !== "-") {
+          className = "-" + className;
+        }
+
+        return `"type": <strong>"${gType}"</strong>,\n${gSpace}"${gKey}": <span class="json bg${className}">${
+          gValue1 || gValue2 || gValue3
+        }</span>`;
+      }
+    );
+
+    while (astConnections.childNodes.length) {
+      astConnections.childNodes[0].parentNode?.removeChild(
+        astConnections.childNodes[0]
+      );
+    }
+    astNodes.textContent = "";
+    astConnections.style.width = `0px`;
+    astConnections.style.height = `0px`;
+    astContainer.removeAttribute("style");
+
+    const treeAst = transformAST(ast);
+    const [maxX, maxY] = treeLayout.autoLayout(treeAst as Tree);
+
+    astConnections.style.width = `${maxX}px`;
+    astConnections.style.height = `${maxY}px`;
+
+    astNodes.innerHTML = draw(treeAst as Tree);
+    drawConnections(treeAst as Tree, astConnections as unknown as SVGElement);
+
+    return astText;
+  }
+
   function handleCommand(command: string) {
     const line = document.createElement("div");
     line.textContent = `> ${command}`;
@@ -63,7 +142,12 @@ export function setupTerminal() {
 
       const outputText = document.createElement("pre");
       try {
-        outputText.innerHTML = command;
+        const tokensOutput = JSON.stringify(printTokens(command), null, 2);
+        const astOutput = printAST(command);
+
+        // outputText.innerHTML = command;
+        // outputText.innerHTML = tokensOutput;
+        outputText.innerHTML = astOutput;
       } catch (e: unknown) {
         outputText.innerHTML = `<span class="error">${(
           e as any
