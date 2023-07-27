@@ -147,7 +147,7 @@ export function setupTerminal() {
 
         // outputText.innerHTML = command;
         // outputText.innerHTML = tokensOutput;
-        outputText.innerHTML = astOutput;
+        // outputText.innerHTML = astOutput;
       } catch (e: unknown) {
         outputText.innerHTML = `<span class="error">${(
           e as any
