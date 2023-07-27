@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>Parser</title>
+  <script type="module" crossorigin src="./assets/index-199ffd95.js"></script>
+  <link rel="stylesheet" href="./assets/index-25128a7e.css">
+</head>
+
+<body>
+  <div id="terminal">
+    <div id="terminal-history"></div>
+    &gt; <div id="terminal-input" contenteditable="true"></div>
+    <button id="caret" for="input">&nbsp;</button>
+  </div>
+  <div id="visualization">
+    <details open>
+      <summary>JSON</summary>
+      <pre id="ast-json"></pre>
+    </details>
+    <details open>
+      <summary>Tokens</summary>
+      <div id="tokens"></div>
+    </details>
+    <details class="full-height" open>
+      <summary>Graph</summary>
+      <div id="ast-container" class="dot-background">
+        <div id="ast-group">
+          <svg id="ast-connections" fill="none"></svg>
+          <div id="ast-nodes"></div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  
+</body>
+
+</html>
